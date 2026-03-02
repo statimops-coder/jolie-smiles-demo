@@ -181,50 +181,57 @@
 
     .hero {
       position: relative;
+      width: 100%;
       min-height: 100vh;
-      color: var(--white);
-      display: flex;
-      align-items: flex-end;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       overflow: hidden;
-      background: #111;
+      background: #0c0c0f;
     }
 
-    .hero video {
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 4vw, 5rem);
+      color: var(--white);
+    }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right video {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 0;
     }
 
-    .hero::before {
+    .hero-right::after {
       content: "";
       position: absolute;
       inset: 0;
-      z-index: 1;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.48) 35%, rgba(0, 0, 0, 0.4));
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      width: var(--container);
-      margin: 0 auto;
-      padding: 8.2rem 0 6rem;
+      background: linear-gradient(to right, #0c0c0f 0%, transparent 30%);
+      pointer-events: none;
     }
 
     .hero-copy {
-      max-width: min(60%, 760px);
+      max-width: 560px;
     }
 
     .hero-copy p {
       margin: 1rem 0 1.5rem;
       font-size: 1.03rem;
-      color: rgba(255, 255, 255, 0.92);
+      color: rgba(255, 255, 255, 0.82);
+      line-height: 1.6;
     }
 
     .hero-copy .eyebrow {
+      color: var(--gold);
+    }
       color: var(--gold);
     }
 
@@ -763,19 +770,21 @@
 
   <main>
     <section class="hero" id="hero">
-      <video autoplay muted loop playsinline>
-        <source src="https://cdn.prod.website-files.com/637e153cb4b25769e5d5bd94%2F67d2e974473496d5fd4cda05_1000000768-1-transcode.mp4" type="video/mp4" />
-      </video>
-      <div class="hero-inner">
+      <div class="hero-left">
         <div class="hero-copy reveal">
           <p class="eyebrow">Prosthodontist &amp; Implant Specialist</p>
-          <h1>It&apos;s time to smile again.</h1>
+          <h1>It&apos;s time to<br>smile again.</h1>
           <p>Same-day dental implants and premium dentures. One specialist. One visit. One smile.</p>
           <a class="cta-btn" href="https://flexbook.me/joliesmile" target="_blank" rel="noopener noreferrer">
             Schedule Your Consultation
             <i data-lucide="arrow-right"></i>
           </a>
         </div>
+      </div>
+      <div class="hero-right">
+        <video autoplay muted loop playsinline>
+          <source src="https://cdn.prod.website-files.com/637e153cb4b25769e5d5bd94%2F67d2e974473496d5fd4cda05_1000000768-1-transcode.mp4" type="video/mp4" />
+        </video>
       </div>
     </section>
 
