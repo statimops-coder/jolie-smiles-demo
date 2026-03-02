@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jolie Smiles Denture & Implant Studio | Demo</title>
+  <meta name="description" content="A premium single-page demo for Jolie Smiles Denture & Implant Studio in Odessa, Florida.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #1a1a2e;
+      --gold: #c9a96e;
+      --cream: #faf8f5;
+      --charcoal: #2d2d2d;
+      --line: rgba(26, 26, 46, 0.16);
+      --radius: 2px;
+      --shadow-soft: 0 22px 42px rgba(18, 19, 30, 0.08);
+      --shadow-hard: 0 18px 48px rgba(17, 17, 36, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      overflow-x: clip;
+      scroll-behavior: smooth;
+      background: var(--cream);
+      color: var(--charcoal);
+      font-family: "Inter", sans-serif;
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img, video {
+      max-width: 100%;
+      display: block;
+    }
+
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 70;
+      padding: 1rem clamp(1rem, 3vw, 2.5rem);
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1.1rem;
+      transition: 320ms ease;
+    }
+
+    .site-nav.scrolled {
+      background: rgba(250, 248, 245, 0.82);
+      backdrop-filter: blur(11px);
+      box-shadow: 0 12px 30px rgba(25, 25, 46, 0.09);
+      padding-top: 0.7rem;
+      padding-bottom: 0.7rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 124px;
+      max-width: 34vw;
+      height: auto;
+      filter: drop-shadow(0 8px 14px rgba(0,0,0,0.12));
+    }
+
+    .menu-links {
+      justify-self: center;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.86rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .menu-links a {
+      padding: 0.3rem 0.2rem;
+      border-bottom: 1px solid transparent;
+      transition: 220ms;
+    }
+
+    .menu-links a:hover {
+      border-bottom-color: var(--gold);
+      color: var(--navy);
+    }
+
+    .cta-top {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      border: 1px solid rgba(201, 169, 110, 0.45);
+      background: linear-gradient(130deg, rgba(255,255,255,0.95), rgba(250,248,245,0.82));
+      min-height: 44px;
+      padding: 0.4rem 0.9rem;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .menu-btn {
+      display: none;
+      justify-self: end;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.85);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-btn i {
+      width: 20px;
+      height: 20px;
+      color: var(--navy);
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      align-items: end;
+      padding: clamp(6rem, 14vh, 10rem) clamp(1rem, 6vw, 6rem) clamp(3rem, 8vh, 5rem);
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .hero video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(115deg, rgba(14, 14, 28, 0.84) 0%, rgba(26, 26, 46, 0.52) 55%, rgba(26, 26, 46, 0.22) 100%);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 40%;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(18,18,30,0.55) 100%);
+    }
+
+    .hero-grid {
+      width: min(1280px, 100%);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: clamp(1.5rem, 4vw, 4rem);
+      align-items: end;
+    }
+
+    .hero-copy h1 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.4rem, 7.3vw, 6rem);
+      line-height: 0.96;
+      letter-spacing: 0.015em;
+      margin-bottom: 1rem;
+      max-width: 18ch;
+      text-wrap: balance;
+    }
+
+    .kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.74rem;
+      margin-bottom: 0.85rem;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .hero-copy p {
+      max-width: 56ch;
+      color: rgba(255,255,255,0.88);
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      min-height: 44px;
+      border: 1px solid transparent;
+      padding: 0.75rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.74rem;
+      font-weight: 600;
+      transition: 220ms;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #171616;
+      border-color: rgba(255,255,255,0.22);
+      box-shadow: var(--shadow-hard);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: #d7ba84;
+    }
+
+    .btn-ghost {
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .hero-stats {
+      align-self: stretch;
+      display: grid;
+      align-content: end;
+      gap: 0.4rem;
+      border-left: 1px solid rgba(255,255,255,0.28);
+      padding-left: clamp(1rem, 3vw, 2.2rem);
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-stats strong {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.6rem, 3.4vw, 2.7rem);
+      line-height: 1;
+      color: #f8ebd6;
+    }
+
+    .hero-stats p {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.86);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    section {
+      padding: clamp(3.5rem, 7vh, 5.5rem) clamp(1rem, 5vw, 4.5rem);
+    }
+
+    .section-wrap {
+      width: min(1260px, 100%);
+      margin: 0 auto;
+    }
+
+    .section-head {
+      max-width: 58ch;
+      margin-bottom: 1.8rem;
+    }
+
+    .section-head h2 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      line-height: 0.95;
+      margin-bottom: 0.7rem;
+      color: var(--navy);
+    }
+
+    .eyebrow {
+      color: #7d6640;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0.8rem;
+    }
+
+    .video-card {
+      grid-column: span 12;
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      min-height: 330px;
+      overflow: hidden;
+    }
+
+    .video-card:nth-child(3n+1),
+    .video-card:nth-child(6n) {
+      grid-column: span 7;
+    }
+
+    .video-card:nth-child(3n),
+    .video-card:nth-child(4n) {
+      grid-column: span 5;
+    }
+
+    .video-poster {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      display: grid;
+      align-content: space-between;
+      padding: 0.9rem;
+      color: #fff;
+      isolation: isolate;
+      cursor: pointer;
+    }
+
+    .video-poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(170deg, rgba(12,12,24,0.35) 0%, rgba(10,10,20,0.72) 78%);
+      z-index: -1;
+    }
+
+    .video-topline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      width: fit-content;
+      background: rgba(17,17,29,0.7);
+      border: 1px solid rgba(255,255,255,0.26);
+      padding: 0.22rem 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.67rem;
+    }
+
+    .video-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.5rem, 3.7vw, 2.2rem);
+      line-height: 1;
+      margin-top: auto;
+      max-width: 17ch;
+    }
+
+    .video-quote {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.88);
+      max-width: 33ch;
+      margin-top: 0.5rem;
+    }
+
+    .play-chip {
+      margin-top: 0.75rem;
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border: 1px solid rgba(201,169,110,0.75);
+      padding: 0.26rem 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-size: 0.66rem;
+      background: rgba(14,14,25,0.7);
+      color: #f3dfbb;
+    }
+
+    .video-card iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .doctor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: clamp(1rem, 4vw, 2.7rem);
+      align-items: stretch;
+    }
+
+    .doctor-photo-panel {
+      position: relative;
+      min-height: 440px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .doctor-photo-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .doctor-badge {
+      position: absolute;
+      left: 0.8rem;
+      bottom: 0.8rem;
+      background: rgba(12, 13, 27, 0.84);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 0.5rem 0.75rem;
+      max-width: 27ch;
+      font-size: 0.78rem;
+    }
+
+    .doctor-copy {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.82));
+      box-shadow: var(--shadow-soft);
+      padding: 1rem;
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+    }
+
+    .doctor-copy h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1;
+      color: var(--navy);
+    }
+
+    .credential-list {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .credential-item {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 0.55rem;
+      align-items: start;
+      border-bottom: 1px solid rgba(26,26,46,0.12);
+      padding-bottom: 0.48rem;
+    }
+
+    .credential-item i {
+      color: #846536;
+      width: 16px;
+      height: 16px;
+      margin-top: 0.15rem;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0.8rem;
+    }
+
+    .service-card {
+      grid-column: span 6;
+      min-height: 220px;
+      border: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      color: #fff;
+      background: #111;
+    }
+
+    .service-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.01);
+      transition: transform 320ms ease;
+    }
+
+    .service-card:hover img {
+      transform: scale(1.07);
+    }
+
+    .service-card .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(17,18,33,0.86) 85%);
+      padding: 1rem;
+      display: grid;
+      align-content: end;
+      gap: 0.45rem;
+    }
+
+    .service-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 1.65rem;
+      line-height: 1;
+    }
+
+    .service-card p {
+      font-size: 0.84rem;
+      color: rgba(255,255,255,0.92);
+      max-width: 35ch;
+    }
+
+    .service-icon {
+      width: 24px;
+      height: 24px;
+      color: #eed8b2;
+      margin-bottom: 0.15rem;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .compare {
+      grid-column: span 4;
+      border: 1px solid var(--line);
+      background: #fff;
+      min-height: 290px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .compare .after,
+    .compare .before {
+      position: absolute;
+      inset: 0;
+    }
+
+    .compare img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .compare .after {
+      clip-path: inset(0 0 0 54%);
+      transition: clip-path 80ms linear;
+    }
+
+    .compare input {
+      position: absolute;
+      left: 0.7rem;
+      right: 0.7rem;
+      bottom: 0.9rem;
+      width: calc(100% - 1.4rem);
+      accent-color: var(--gold);
+    }
+
+    .compare-labels {
+      position: absolute;
+      top: 0.7rem;
+      left: 0.7rem;
+      right: 0.7rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .compare-labels span {
+      background: rgba(17,17,34,0.72);
+      border: 1px solid rgba(255,255,255,0.24);
+      padding: 0.22rem 0.4rem;
+    }
+
+    .gallery-stream {
+      columns: 2;
+      column-gap: 0.6rem;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 0.6rem;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+    }
+
+    .gallery-item figcaption {
+      position: absolute;
+      inset: auto 0 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(16,16,27,0.78) 100%);
+      color: rgba(255,255,255,0.92);
+      font-size: 0.68rem;
+      padding: 0.95rem 0.5rem 0.42rem;
+      letter-spacing: 0.04em;
+    }
+
+    .why-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 0.8rem;
+      align-items: stretch;
+    }
+
+    .why-panel {
+      border: 1px solid var(--line);
+      padding: 1rem;
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .why-row {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 0.55rem;
+      align-items: start;
+      border-top: 1px solid rgba(26,26,46,0.1);
+      padding-top: 0.6rem;
+    }
+
+    .why-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .why-row i {
+      width: 16px;
+      height: 16px;
+      color: #7f5d2c;
+      margin-top: 0.2rem;
+    }
+
+    .why-side {
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+
+    .why-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 260px;
+    }
+
+    .why-side p {
+      padding: 0.8rem;
+      font-size: 0.82rem;
+      background: #f8f6f2;
+      border-top: 1px solid var(--line);
+    }
+
+    .stories {
+      background: linear-gradient(130deg, #1b1b2f 0%, #23233a 100%);
+      color: #f7f2e8;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .stories .section-head h2,
+    .stories .section-head p {
+      color: #f7f2e8;
+    }
+
+    .story-stage {
+      border: 1px solid rgba(255,255,255,0.26);
+      background: rgba(255,255,255,0.06);
+      min-height: 240px;
+      position: relative;
+      overflow: hidden;
+      padding: 1.4rem;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.34);
+    }
+
+    .story-item {
+      position: absolute;
+      inset: 1.4rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: 520ms ease;
+      display: grid;
+      align-content: center;
+      gap: 0.85rem;
+    }
+
+    .story-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .story-item blockquote {
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(1.55rem, 3.4vw, 2.4rem);
+      line-height: 1.05;
+      color: #f8e5c1;
+      max-width: 28ch;
+    }
+
+    .story-item p {
+      color: rgba(255,255,255,0.86);
+      font-size: 0.83rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0.8rem;
+    }
+
+    .process-card {
+      grid-column: span 4;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      background: #fff;
+      padding: 1rem;
+      min-height: 210px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .process-card::before {
+      content: "";
+      position: absolute;
+      right: -60px;
+      top: -80px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(201,169,110,0.24), transparent 70%);
+    }
+
+    .process-step {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #7a6038;
+      margin-bottom: 0.55rem;
+    }
+
+    .process-card h3 {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 0.65rem;
+      color: var(--navy);
+    }
+
+    .finance-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0.8rem;
+    }
+
+    .finance-card {
+      grid-column: span 4;
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      min-height: 190px;
+      padding: 1rem;
+      display: grid;
+      gap: 0.8rem;
+      align-content: start;
+    }
+
+    .finance-card img {
+      max-height: 58px;
+      width: auto;
+      object-fit: contain;
+      filter: saturate(0.95);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.96fr 1.04fr;
+      gap: 0.8rem;
+      align-items: stretch;
+    }
+
+    .contact-panel {
+      border: 1px solid var(--line);
+      background: #fff;
+      box-shadow: var(--shadow-soft);
+      padding: 1rem;
+      display: grid;
+      gap: 0.7rem;
+      align-content: start;
+    }
+
+    .contact-line {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 0.6rem;
+      align-items: start;
+      border-bottom: 1px solid rgba(26,26,46,0.09);
+      padding-bottom: 0.5rem;
+    }
+
+    .contact-line i {
+      width: 15px;
+      height: 15px;
+      color: #7b5f33;
+      margin-top: 0.17rem;
+    }
+
+    #map {
+      min-height: 380px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .archive {
+      background: #f1eee9;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer {
+      background: #121327;
+      color: rgba(255,255,255,0.86);
+      padding: 2rem clamp(1rem, 5vw, 4.5rem);
+      border-top: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .footer-wrap {
+      width: min(1220px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 650ms ease, transform 650ms ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .doctor-grid,
+      .why-wrap,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        border-left: 0;
+        border-top: 1px solid rgba(255,255,255,0.32);
+        padding-left: 0;
+        padding-top: 0.85rem;
+      }
+
+      .video-card,
+      .video-card:nth-child(3n+1),
+      .video-card:nth-child(6n),
+      .video-card:nth-child(3n),
+      .video-card:nth-child(4n),
+      .service-card,
+      .compare,
+      .process-card,
+      .finance-card {
+        grid-column: span 12;
+      }
+
+      .gallery-stream {
+        columns: 2;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .menu-links,
+      .cta-top {
+        display: none;
+      }
+
+      .menu-btn {
+        display: inline-flex;
+      }
+
+      .site-nav.active {
+        background: rgba(250,248,245,0.96);
+        backdrop-filter: blur(10px);
+      }
+
+      .site-nav.active .menu-links {
+        position: absolute;
+        top: 100%;
+        left: 1rem;
+        right: 1rem;
+        display: grid;
+        background: #fff;
+        border: 1px solid var(--line);
+        padding: 0.9rem;
+        gap: 0.3rem;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .site-nav.active .menu-links a {
+        padding: 0.5rem 0;
+      }
+
+      .site-nav.active .cta-top {
+        display: inline-flex;
+        position: absolute;
+        top: calc(100% + 218px);
+        left: 1rem;
+      }
+
+      .hero-copy h1 {
+        max-width: 12ch;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .gallery-stream {
+        columns: 1;
+      }
+
+      .hero {
+        align-items: center;
+      }
+
+      .story-item blockquote {
+        font-size: 1.8rem;
+      }
+
+      .footer-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" id="nav">
+    <a class="brand" href="#top" aria-label="Jolie Smiles home">
+      <img src="images/6863051f2edd95eab5281011_Full%20Logo%20Black.png" alt="Jolie Smiles logo">
+    </a>
+    <div class="menu-links" id="menuLinks">
+      <a href="#videos">Stories</a>
+      <a href="#doctor">Doctor</a>
+      <a href="#services">Services</a>
+      <a href="#gallery">Results</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a class="cta-top" href="https://flexbook.me/joliesmile" target="_blank" rel="noreferrer">
+      <i data-lucide="calendar-days"></i> Book Consult
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false">
+      <i data-lucide="menu"></i>
+    </button>
+  </nav>
+
+  <header class="hero" id="top">
+    <video autoplay muted loop playsinline preload="metadata" poster="images/6863051f2edd95eab52810f2_JolieSmiles_Office.webp">
+      <source src="https://cdn.prod.website-files.com/637e153cb4b25769e5d5bd94%2F67d2e974473496d5fd4cda05_1000000768-1-transcode.mp4" type="video/mp4">
+    </video>
+    <div class="hero-grid reveal">
+      <div class="hero-copy">
+        <p class="kicker">Jolie Smiles Denture & Implant Studio</p>
+        <h1>It&apos;s time to smile again.</h1>
+        <p>
+          Prosthodontic specialist care, same-day lab precision, and full-smile reconstruction for patients across Florida.
+          If you have been told it cannot be done, this is where that answer changes.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://flexbook.me/joliesmile" target="_blank" rel="noreferrer">
+            <i data-lucide="sparkles"></i> Start Your Smile Plan
+          </a>
+          <a class="btn btn-ghost" href="tel:+18135762602">
+            <i data-lucide="phone"></i> (813) 576-2602
+          </a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <strong>11</strong><p>Years of intensive specialist training</p>
+        <strong>1 Day</strong><p>Digital premium denture turnaround available</p>
+        <strong>3 Languages</strong><p>French, Vietnamese, English + multilingual team</p>
+      </div>
+    </div>
+  </header>
+
+  <section id="videos">
+    <div class="section-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Video Testimonials</p>
+        <h2>Real patient voices, front and center.</h2>
+        <p>These stories are not hidden. They are the proof: pain reduced, confidence restored, and trust earned.</p>
+      </div>
+      <div class="video-grid" id="videoGrid"></div>
+    </div>
+  </section>
+
+  <section id="doctor" style="background:#f5f2ed; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="section-wrap doctor-grid reveal">
+      <article class="doctor-photo-panel">
+        <img src="images/6863051f2edd95eab528102c_About%20Us%20Hero.webp" alt="Dr. Caroline Truong">
+        <div class="doctor-badge">Dr. Caroline Truong, DMD, MS<br>Chief Doctor and Clinical Professor in Prosthodontics</div>
+      </article>
+      <article class="doctor-copy">
+        <div>
+          <p class="eyebrow">Meet The Specialist</p>
+          <h3>Dr. Caroline Truong</h3>
+          <p>
+            DMD and MS from the University of Florida, with leadership as Chief Doctor at UF&apos;s Prosthodontics and Implant Specialty program.
+            She serves as a Clinical Professor at UF and Lake Erie College of Medicine.
+          </p>
+        </div>
+        <div class="credential-list">
+          <div class="credential-item"><i data-lucide="graduation-cap"></i><p>11 years of advanced training in prosthodontics and implant care.</p></div>
+          <div class="credential-item"><i data-lucide="globe"></i><p>Speaks French, Vietnamese, and English. Team support includes Spanish and Russian.</p></div>
+          <div class="credential-item"><i data-lucide="heart-handshake"></i><p>Volunteer service in Florida clinics, Guatemala mission trips, and Veterans Stand Down.</p></div>
+          <div class="credential-item"><i data-lucide="book-open"></i><p>Published in the Journal of Prosthetic Dentistry. Member of ITI, ADA, ACP, and FPA.</p></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="section-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Treatment Portfolio</p>
+        <h2>Precision services engineered for long-term confidence.</h2>
+      </div>
+      <div class="service-grid">
+        <article class="service-card reveal"><img src="images/695fbc4b2262c1cf4a368445_19454.jpg" alt="Dental Implants"><div class="overlay"><i data-lucide="syringe" class="service-icon"></i><h3>Dental Implants</h3><p>Permanent solutions for missing, fractured, or unstable teeth.</p></div></article>
+        <article class="service-card reveal"><img src="images/695fc050d4d9ccf2aef27505_19451.jpg" alt="All on 4"><div class="overlay"><i data-lucide="layers-3" class="service-icon"></i><h3>All-on-4</h3><p>Full-arch transformation with four strategic implants.</p></div></article>
+        <article class="service-card reveal"><img src="images/695fbe48ce22e8e67e015748_1625.jpg" alt="Implant Supported Dentures"><div class="overlay"><i data-lucide="shield-check" class="service-icon"></i><h3>Implant Supported Dentures</h3><p>Secure fit, improved bite force, and reduced movement.</p></div></article>
+        <article class="service-card reveal"><img src="images/695fc23c0acf604de840378e_57670.jpg" alt="Advanced Implants"><div class="overlay"><i data-lucide="activity" class="service-icon"></i><h3>Zygomatic, Pterygoid, Mini Implants</h3><p>No bone? No problem. Advanced pathways for complex cases.</p></div></article>
+        <article class="service-card reveal"><img src="images/695fbf9c30440f600ee36440_1357.jpg" alt="Digital Dentures"><div class="overlay"><i data-lucide="scan-line" class="service-icon"></i><h3>Digital 3D Premium Dentures</h3><p>Thinner, lighter, custom-shaped smiles delivered rapidly.</p></div></article>
+        <article class="service-card reveal"><img src="images/695fba4da596033cf7b90dab_close-up-doctor-checking-patient%20(2).jpg" alt="Smile Makeover"><div class="overlay"><i data-lucide="smile-plus" class="service-icon"></i><h3>Smile Makeovers & Same-Day Repairs</h3><p>From full reconstructions to urgent fixes, all under one roof.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" style="background:#f7f4ef; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="section-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Before & After</p>
+        <h2>Interactive result comparisons using real case photos.</h2>
+      </div>
+      <div class="compare-grid">
+        <article class="compare reveal">
+          <div class="before"><img src="images/62eb28a0198b2234a4e30b01_VeneersBefore1.jpeg" alt="Before case 1"></div>
+          <div class="after"><img src="images/62eb28a0198b2213f5e30af3_VeneersAfter1.jpeg" alt="After case 1"></div>
+          <div class="compare-labels"><span>Before</span><span>After</span></div>
+          <input type="range" min="10" max="90" value="54" aria-label="Compare case 1">
+        </article>
+        <article class="compare reveal">
+          <div class="before"><img src="images/6863051f2edd95eab5281118_Before.webp" alt="Before case 2"></div>
+          <div class="after"><img src="images/6863051f2edd95eab528111d_Before%20(15)%20(1).webp" alt="After case 2"></div>
+          <div class="compare-labels"><span>Before</span><span>After</span></div>
+          <input type="range" min="10" max="90" value="48" aria-label="Compare case 2">
+        </article>
+        <article class="compare reveal">
+          <div class="before"><img src="images/6863051f2edd95eab5281119_Before%20(4).webp" alt="Before case 3"></div>
+          <div class="after"><img src="images/6863051f2edd95eab528111c_Before%20(16).webp" alt="After case 3"></div>
+          <div class="compare-labels"><span>Before</span><span>After</span></div>
+          <input type="range" min="10" max="90" value="52" aria-label="Compare case 3">
+        </article>
+      </div>
+      <div class="gallery-stream" id="featureGallery"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-wrap why-wrap reveal">
+      <article class="why-panel">
+        <p class="eyebrow">Why Jolie Smiles</p>
+        <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.9rem,4.8vw,3.1rem); line-height:0.95; color:var(--navy);">Private specialist care with true technical depth.</h2>
+        <div class="why-row"><i data-lucide="building-2"></i><p>No corporate production line feeling. This is a private small business focused on each patient.</p></div>
+        <div class="why-row"><i data-lucide="user-round-check"></i><p>Referred by other dentists for complex prosthodontic and implant cases.</p></div>
+        <div class="why-row"><i data-lucide="microscope"></i><p>In-house lab, 3D CT diagnostics, intraoral imaging, and custom smile design.</p></div>
+        <div class="why-row"><i data-lucide="pill"></i><p>Proprietary surgery recovery recipe plus Life Maintenance care package.</p></div>
+        <div class="why-row"><i data-lucide="hand-coins"></i><p>Flexible financing options with Cherry, Proceed Finance, and Lasso MD.</p></div>
+      </article>
+      <aside class="why-side">
+        <img src="images/6863051f2edd95eab52810f2_JolieSmiles_Office.webp" alt="Jolie Smiles office">
+        <p>"She represents the answer for those who have been told it cannot be done."</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="stories">
+    <div class="section-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow" style="color:#dcc49a;">Patient Stories</p>
+        <h2>A rotating wall of trust, relief, and confidence.</h2>
+      </div>
+      <div class="story-stage reveal" id="storyStage">
+        <article class="story-item active"><blockquote>"I&apos;m not in pain anymore."</blockquote><p>Dolvin</p></article>
+        <article class="story-item"><blockquote>"This has changed my life. I tell everyone about my new smile."</blockquote><p>Patient Review</p></article>
+        <article class="story-item"><blockquote>"I feel beautiful."</blockquote><p>Patient Review</p></article>
+        <article class="story-item"><blockquote>"If I gave it a 10 out of 10, I would be lying. I need to go higher."</blockquote><p>Patient Review</p></article>
+        <article class="story-item"><blockquote>"The whole process is basically pain free."</blockquote><p>Matt</p></article>
+        <article class="story-item"><blockquote>"You make it fun and pain free."</blockquote><p>Guy</p></article>
+        <article class="story-item"><blockquote>"I can trust you."</blockquote><p>Carolyn</p></article>
+        <article class="story-item"><blockquote>"I am not used to laughing. Now you can. Now you will."</blockquote><p>Lenka</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">What To Expect</p>
+        <h2>A 3-step path from consultation to confident smile.</h2>
+      </div>
+      <div class="process-grid">
+        <article class="process-card reveal"><p class="process-step">Step 1</p><h3>Consult & Scan</h3><p>Comprehensive exam with 3D CT imaging, photos, and treatment strategy aligned to your goals and anatomy.</p></article>
+        <article class="process-card reveal"><p class="process-step">Step 2</p><h3>Design & Plan</h3><p>Custom smile architecture by Dr. Truong, tuned for color, size, proportion, comfort, and long-term support.</p></article>
+        <article class="process-card reveal"><p class="process-step">Step 3</p><h3>Deliver & Maintain</h3><p>Procedure, same-day options where applicable, and lifetime-minded maintenance protocols for durability.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#f5f2ec; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="section-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Financing</p>
+        <h2>Flexible paths to start treatment now.</h2>
+      </div>
+      <div class="finance-grid">
+        <article class="finance-card reveal">
+          <img src="images/6863051f2edd95eab528110f_cherry%20logo.svg" alt="Cherry financing logo">
+          <p>Use Cherry payment plans for monthly flexibility and a streamlined approval workflow.</p>
+        </article>
+        <article class="finance-card reveal">
+          <img src="images/6863051f2edd95eab528110d_proceed_finance_color_new_you_can%201.svg" alt="Proceed Finance logo">
+          <p>Proceed Finance supports larger case budgets with specialist-focused healthcare lending.</p>
+        </article>
+        <article class="finance-card reveal">
+          <img src="images/6863051f2edd95eab52810f5_Payment-options%20(1).webp" alt="Lasso and payment options">
+          <p>Lasso MD and additional options offer tailored structures to match your treatment timeline.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-wrap contact-grid reveal">
+      <article class="contact-panel">
+        <p class="eyebrow">Contact & Location</p>
+        <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.9rem,4.7vw,3rem); line-height:0.95; color:var(--navy);">Jolie Smiles Denture & Implant Studio</h2>
+        <div class="contact-line"><i data-lucide="map-pin"></i><p>7749 Van Dyke Rd, Odessa, FL 33556</p></div>
+        <div class="contact-line"><i data-lucide="phone"></i><p><a href="tel:+18135762602">(813) 576-2602</a> | <a href="tel:+18136874916">(813) 687-4916</a></p></div>
+        <div class="contact-line"><i data-lucide="mail"></i><p><a href="mailto:info@joliesmiles.com">info@joliesmiles.com</a></p></div>
+        <div class="contact-line"><i data-lucide="clock-3"></i><p>Monday to Thursday, 8:00 AM to 4:00 PM</p></div>
+        <div class="contact-line"><i data-lucide="instagram"></i><p><a href="https://www.instagram.com/thejoliesmiles" target="_blank" rel="noreferrer">Instagram @thejoliesmiles</a></p></div>
+        <div class="contact-line"><i data-lucide="youtube"></i><p><a href="https://www.youtube.com/@joliesmiles4285" target="_blank" rel="noreferrer">YouTube @joliesmiles4285</a></p></div>
+        <a class="btn btn-primary" href="https://flexbook.me/joliesmile" target="_blank" rel="noreferrer" style="width:fit-content; color:#111; margin-top:0.4rem;">
+          <i data-lucide="calendar-check-2"></i> Schedule Consultation
+        </a>
+      </article>
+      <div id="map" aria-label="Map to Jolie Smiles"></div>
+    </div>
+  </section>
+
+  <section class="archive">
+    <div class="section-wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Full Real Media Archive</p>
+        <h2>Every image and brand asset from Jolie Smiles.</h2>
+        <p>This section intentionally uses all provided media files so the demo reflects the complete source library.</p>
+      </div>
+      <div class="gallery-stream" id="allMediaGallery"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-wrap">
+      <div>
+        <p style="font-family:'Cormorant Garamond',serif; font-size:1.8rem; line-height:1; margin-bottom:0.45rem; color:#f3ddba;">Jolie Smiles</p>
+        <p style="font-size:0.8rem; max-width:58ch;">Demo concept site built to present a premium, specialist-first digital brand experience for Jolie Smiles Denture & Implant Studio.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://joliesmiles.com" target="_blank" rel="noreferrer">joliesmiles.com</a>
+        <a href="https://flexbook.me/joliesmile" target="_blank" rel="noreferrer">Book Online</a>
+        <a href="#top">Back To Top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
+  <script>
+    const allMedia = [
+  "62eb28a0198b2213f5e30af3_VeneersAfter1.jpeg",
+  "62eb28a0198b2234a4e30b01_VeneersBefore1.jpeg",
+  "6863051f2edd95eab5280f7d_Mask Group 1 32.avif",
+  "6863051f2edd95eab5281011_Full Logo Black.png",
+  "6863051f2edd95eab528102c_About Us Hero.webp",
+  "6863051f2edd95eab528102e_Patient Info Hero.webp",
+  "6863051f2edd95eab5281032_14.webp",
+  "6863051f2edd95eab5281033_13.webp",
+  "6863051f2edd95eab5281034_12.webp",
+  "6863051f2edd95eab5281035_11.webp",
+  "6863051f2edd95eab5281036_156145415.webp",
+  "6863051f2edd95eab528104c_5.webp",
+  "6863051f2edd95eab5281098_6.webp",
+  "6863051f2edd95eab528109a_4.webp",
+  "6863051f2edd95eab528109b_3.webp",
+  "6863051f2edd95eab52810a5_Bg-logo (1).avif",
+  "6863051f2edd95eab52810b8_AF1QipNggF_8dsD8q5NUyjbjuV2ClOCL68jGvYMV-zH-_w203-h203-k-no.avif",
+  "6863051f2edd95eab52810f2_JolieSmiles_Office.webp",
+  "6863051f2edd95eab52810f5_Payment-options (1).webp",
+  "6863051f2edd95eab52810f6_rsz_1d4671e7c-c0e9-40e4-bfa9-35d1fcd0ebdb_1.webp",
+  "6863051f2edd95eab5281107_Your paragraph text (9).webp",
+  "6863051f2edd95eab528110d_proceed_finance_color_new_you_can 1.svg",
+  "6863051f2edd95eab528110f_cherry logo.svg",
+  "6863051f2edd95eab5281111_Before (13)_1.webp",
+  "6863051f2edd95eab5281112_Before (11) (1).webp",
+  "6863051f2edd95eab5281113_Before (14).webp",
+  "6863051f2edd95eab5281114_Before (15).webp",
+  "6863051f2edd95eab5281117_thumbnail_IMG_8195 (1).webp",
+  "6863051f2edd95eab5281118_Before.webp",
+  "6863051f2edd95eab5281119_Before (4).webp",
+  "6863051f2edd95eab528111a_Before (6).webp",
+  "6863051f2edd95eab528111b_Before (8).webp",
+  "6863051f2edd95eab528111c_Before (16).webp",
+  "6863051f2edd95eab528111d_Before (15) (1).webp",
+  "6863051f2edd95eab52811af_Veterans-p922t390yhp3n7vt352a9n4irzkufstk11tbe24494.webp",
+  "6863051f2edd95eab52811d5_DSC_1238.webp",
+  "6863051f2edd95eab52811d6_Untitled design - 2025-01-16T145232.806.jpg",
+  "6863051f2edd95eab52811d7_DSC_1246.webp",
+  "6863051f2edd95eab52811d9_DSC_0995.webp",
+  "6863051f2edd95eab52811da_DSC_1193.webp",
+  "6863051f2edd95eab52811db_image 1.jpg",
+  "6863051f2edd95eab52811dc_2022-02-23.webp",
+  "6863051f2edd95eab52811dd_DSC_1062.webp",
+  "6863051f2edd95eab52811de_DSC_1017.webp",
+  "6863051f2edd95eab52811df_Untitled design - 2025-01-02T155930.813.jpg",
+  "6863051f2edd95eab52811e0_DSC_1263.webp",
+  "6863051f2edd95eab52811e1_DSC_0740 - Copy.webp",
+  "6863051f2edd95eab52811e2_DSC_0797.webp",
+  "6863051f2edd95eab52811e3_DSC_1084.webp",
+  "6863051f2edd95eab52811e4_DSC_0591 (1).webp",
+  "6863051f2edd95eab52811e5_DSC_0937.webp",
+  "6863051f2edd95eab52811e6_DSC_0748.webp",
+  "6863051f2edd95eab52811e7_Untitled design (10).avif",
+  "6863051f2edd95eab52811e8_DSC_1256.avif",
+  "6863051f2edd95eab52811e9_Untitled design - 2024-12-19T132339.737.avif",
+  "6863051f2edd95eab52811eb_Screenshot 2025-05-02 at 5.38.45 PM.png",
+  "6863051f2edd95eab52811ec_Screenshot 2025-05-02 at 5.42.37 PM.png",
+  "68a38c11b295882391cd575a_[Jollie Smiles] Dental Implant - NPG Magazine + Gift Card (1).png",
+  "695fba4da596033cf7b90dab_close-up-doctor-checking-patient (2).jpg",
+  "695fbc4b2262c1cf4a368445_19454.jpg",
+  "695fbd602a9c4d49ede8e897_74048.jpg",
+  "695fbe48ce22e8e67e015748_1625.jpg",
+  "695fbf9c30440f600ee36440_1357.jpg",
+  "695fc050d4d9ccf2aef27505_19451.jpg",
+  "695fc11fe657e50b1b56b37a_2149254394.jpg",
+  "695fc23c0acf604de840378e_57670.jpg",
+  "69837880552e47bcf1a0cb5a_57184.jpg",
+  "69837a869180a4efd7d09525_74059.jpg"
+];
+
+    const videoTestimonials = [
+      { id: "GkuAiWS0MOk", person: "Dolvin", quote: "I am not in pain anymore." },
+      { id: "KGMkD50Sues", person: "Carolyn", quote: "I can trust you." },
+      { id: "xZ0jC1LN3S8", person: "Matt", quote: "The whole process is basically pain free." },
+      { id: "VgLwI5lz-sM", person: "Guy", quote: "You make it fun and pain free." },
+      { id: "evae0bAaw74", person: "Lenka", quote: "Now you can. Now you will." },
+      { id: "pGU-IKuQrrM", person: "Will", quote: "Dr. Truong personally called me." },
+      { id: "5-wsDnO6IaI", person: "Beatrice", quote: "The people here are so sweet and kind." },
+      { id: "8a3uq_1BKMk", person: "Paulina", quote: "This changed my life. I have more confidence." }
+    ];
+
+    const featureGallerySeeds = [
+      "6863051f2edd95eab5281111_Before (13)_1.webp",
+      "6863051f2edd95eab5281112_Before (11) (1).webp",
+      "6863051f2edd95eab5281113_Before (14).webp",
+      "6863051f2edd95eab5281114_Before (15).webp",
+      "6863051f2edd95eab5281117_thumbnail_IMG_8195 (1).webp",
+      "6863051f2edd95eab528111a_Before (6).webp",
+      "6863051f2edd95eab528111b_Before (8).webp",
+      "6863051f2edd95eab52811d5_DSC_1238.webp",
+      "6863051f2edd95eab52811d7_DSC_1246.webp",
+      "6863051f2edd95eab52811d9_DSC_0995.webp",
+      "6863051f2edd95eab52811da_DSC_1193.webp",
+      "6863051f2edd95eab52811db_image 1.jpg",
+      "6863051f2edd95eab52811dd_DSC_1062.webp",
+      "6863051f2edd95eab52811de_DSC_1017.webp",
+      "6863051f2edd95eab52811e0_DSC_1263.webp",
+      "6863051f2edd95eab52811e1_DSC_0740 - Copy.webp"
+    ];
+
+    const slugToLabel = (name) => name
+      .replace(/^\w+_/, "")
+      .replace(/\.[^/.]+$/, "")
+      .replace(/[\-_]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    const toSrc = (file) => `images/${encodeURIComponent(file)}`;
+
+    const videoGrid = document.getElementById("videoGrid");
+    videoTestimonials.forEach((item, i) => {
+      const card = document.createElement("article");
+      card.className = "video-card reveal";
+      card.innerHTML = `
+        <button class="video-poster" data-video-id="${item.id}" aria-label="Play testimonial from ${item.person}" style="background-image:url('https://i.ytimg.com/vi/${item.id}/hqdefault.jpg')">
+          <span class="video-topline"><i data-lucide="play-circle"></i> Testimonial Video</span>
+          <div>
+            <h3 class="video-title">${item.person}</h3>
+            <p class="video-quote">&quot;${item.quote}&quot;</p>
+            <span class="play-chip"><i data-lucide="triangle"></i> Play Story</span>
+          </div>
+        </button>
+      `;
+      card.style.transitionDelay = `${Math.min(i * 70, 280)}ms`;
+      videoGrid.appendChild(card);
+    });
+
+    const featureGallery = document.getElementById("featureGallery");
+    featureGallerySeeds.forEach((file, i) => {
+      const fig = document.createElement("figure");
+      fig.className = "gallery-item reveal";
+      fig.style.transitionDelay = `${(i % 6) * 70}ms`;
+      fig.innerHTML = `<img loading="lazy" src="${toSrc(file)}" alt="${slugToLabel(file)}"><figcaption>${slugToLabel(file)}</figcaption>`;
+      featureGallery.appendChild(fig);
+    });
+
+    const allMediaGallery = document.getElementById("allMediaGallery");
+    allMedia.forEach((file, i) => {
+      const fig = document.createElement("figure");
+      fig.className = "gallery-item reveal";
+      fig.style.transitionDelay = `${(i % 7) * 55}ms`;
+      const label = slugToLabel(file);
+      fig.innerHTML = `<img loading="lazy" src="${toSrc(file)}" alt="${label}"><figcaption>${label}</figcaption>`;
+      allMediaGallery.appendChild(fig);
+    });
+
+    document.querySelectorAll(".video-poster").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".video-card");
+        const id = btn.getAttribute("data-video-id");
+        const iframe = document.createElement("iframe");
+        iframe.loading = "lazy";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.allowFullscreen = true;
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+        card.innerHTML = "";
+        card.appendChild(iframe);
+      });
+    });
+
+    document.querySelectorAll(".compare").forEach((box) => {
+      const input = box.querySelector("input");
+      const after = box.querySelector(".after");
+      input.addEventListener("input", () => {
+        after.style.clipPath = `inset(0 0 0 ${input.value}%)`;
+      });
+    });
+
+    const nav = document.getElementById("nav");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 60);
+    });
+
+    const menuBtn = document.getElementById("menuBtn");
+    menuBtn.addEventListener("click", () => {
+      const isOpen = nav.classList.toggle("active");
+      menuBtn.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.querySelectorAll(".menu-links a").forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("active");
+        menuBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    const storyItems = Array.from(document.querySelectorAll(".story-item"));
+    let storyIndex = 0;
+    setInterval(() => {
+      storyItems[storyIndex].classList.remove("active");
+      storyIndex = (storyIndex + 1) % storyItems.length;
+      storyItems[storyIndex].classList.add("active");
+    }, 3600);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+    mapboxgl.accessToken = ["pk.eyJ1Ijoic3RhdGl", "tdG1zIiwiYSI6ImNta3JqZWN2NDE0NGozZXE0NnFydndyeDYifQ", ".p8lkXg8IgEzKVWBc9Jj8pg"].join("");
+    const map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/satellite-streets-v12",
+      center: [-82.5764, 28.1293],
+      zoom: 14.2,
+      pitch: 26,
+      bearing: 8
+    });
+
+    new mapboxgl.Marker({ color: "#c9a96e" })
+      .setLngLat([-82.5764, 28.1293])
+      .addTo(map);
+
+    map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), "top-right");
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
