@@ -183,43 +183,46 @@
       position: relative;
       width: 100%;
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       overflow: hidden;
       background: #0c0c0f;
-    }
-
-    .hero-left {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: clamp(3rem, 6vw, 6rem) clamp(2rem, 4vw, 5rem);
-      color: var(--white);
+      align-items: center;
     }
 
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-right video {
+    .hero-collage {
       position: absolute;
       inset: 0;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 3px;
+      z-index: 0;
+    }
+
+    .hero-collage img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      filter: grayscale(20%);
     }
 
-    .hero-right::after {
-      content: "";
+    .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right, #0c0c0f 0%, transparent 30%);
-      pointer-events: none;
+      z-index: 1;
+      background: linear-gradient(135deg, rgba(12, 12, 15, 0.88) 0%, rgba(12, 12, 15, 0.65) 50%, rgba(12, 12, 15, 0.82) 100%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      width: var(--container);
+      margin: 0 auto;
+      padding: 8rem 0 6rem;
     }
 
     .hero-copy {
-      max-width: 560px;
+      max-width: 620px;
     }
 
     .hero-copy p {
@@ -770,7 +773,28 @@
 
   <main>
     <section class="hero" id="hero">
-      <div class="hero-left">
+      <div class="hero-collage">
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810f9_Before%20(10).webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e2_1000014813.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810fa_Before%20(11).webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e3_1000015704.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281105_Before%20(12).webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e4_1000014432.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281118_Before.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e5_1000015808.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281119_Before%20(4).webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e6_1000015810.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528111a_Before%20(6).webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810dc_Photo3-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528111b_Before%20(8).webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810dd_Photo5-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528111c_Before%20(16).webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810de_Photo7-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e0_Photo2-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
+        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810df_Photo8-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
+      </div>
+      <div class="hero-overlay"></div>
+      <div class="hero-inner">
         <div class="hero-copy reveal">
           <p class="eyebrow">Prosthodontist &amp; Implant Specialist</p>
           <h1>It&apos;s time to<br>smile again.</h1>
@@ -780,11 +804,6 @@
             <i data-lucide="arrow-right"></i>
           </a>
         </div>
-      </div>
-      <div class="hero-right">
-        <video autoplay muted loop playsinline>
-          <source src="https://cdn.prod.website-files.com/637e153cb4b25769e5d5bd94%2F67d2e974473496d5fd4cda05_1000000768-1-transcode.mp4" type="video/mp4" />
-        </video>
       </div>
     </section>
 
