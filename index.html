@@ -165,6 +165,7 @@
 
         .hero-content {
             padding: 2rem;
+            z-index: 10;
         }
 
         .location-badge {
@@ -215,22 +216,18 @@
             margin-top: 2rem;
         }
 
-        .hero-image {
-            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
+        .hero-video {
             border-radius: 12px;
             height: 100%;
             min-height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            text-align: center;
-            padding: 2rem;
             overflow: hidden;
+            background: #000;
         }
 
-        .hero-image img {
+        .hero-video video {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -315,15 +312,13 @@
         }
 
         .doctor-image {
-            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
             border-radius: 12px;
             height: 400px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            text-align: center;
             overflow: hidden;
+            background: #F0F0F0;
         }
 
         .doctor-image img {
@@ -378,6 +373,7 @@
             border-bottom: 2px solid #E5DDD0;
             margin-bottom: 2rem;
             gap: 0;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -418,7 +414,6 @@
         }
 
         .service-gallery {
-            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
             border-radius: 12px;
             min-height: 400px;
             display: flex;
@@ -427,6 +422,7 @@
             color: white;
             text-align: center;
             overflow: hidden;
+            background: #F0F0F0;
         }
 
         .service-gallery img {
@@ -499,8 +495,7 @@
         }
 
         .result-image {
-            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
-            height: 250px;
+            height: 280px;
             border-radius: 8px;
             margin-bottom: 1.5rem;
             display: flex;
@@ -509,6 +504,7 @@
             color: white;
             font-size: 0.95rem;
             overflow: hidden;
+            background: #F0F0F0;
         }
 
         .result-image img {
@@ -542,7 +538,6 @@
         }
 
         .community-image {
-            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
             border-radius: 12px;
             height: 300px;
             display: flex;
@@ -551,6 +546,7 @@
             color: white;
             text-align: center;
             overflow: hidden;
+            background: #F0F0F0;
         }
 
         .community-image img {
@@ -580,7 +576,6 @@
         }
 
         .map-placeholder {
-            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
             border-radius: 12px;
             height: 400px;
             display: flex;
@@ -590,6 +585,7 @@
             font-size: 1.1rem;
             text-align: center;
             overflow: hidden;
+            background: #F0F0F0;
         }
 
         .map-placeholder img {
@@ -754,7 +750,7 @@
                 gap: 2rem;
             }
 
-            .hero-image {
+            .hero-video {
                 min-height: 300px;
             }
 
@@ -813,6 +809,10 @@
             .fear-cards {
                 grid-template-columns: 1fr;
             }
+
+            .lab-stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -828,7 +828,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Video -->
     <section class="hero">
         <div class="hero-content">
             <div class="location-badge">ODESSA & TRINITY, FLORIDA</div>
@@ -846,8 +846,11 @@
                 <a href="#results" class="btn btn-outline btn-lg">See Same-Day Results</a>
             </div>
         </div>
-        <div class="hero-image">
-            <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528112f_Untitled%20design%20(71).avif" alt="Dr. Caroline Truong smiling in clinic">
+        <div class="hero-video">
+            <video autoplay loop muted playsinline>
+                <source src="https://cdn.prod.website-files.com/637e153cb4b25769e5d5bd94%2F67d2e974473496d5fd4cda05_1000000768-1-transcode.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </section>
 
@@ -886,7 +889,7 @@
     <section style="background: #F8F6F2;" id="about">
         <div class="container about-doctor">
             <div class="doctor-image">
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281130_Untitled%20design%20-%202025-03-06T133828.318.avif" alt="Dr. Caroline Truong in her dental practice">
+                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281130_Untitled%20design%20-%202025-03-06T133828.318.avif" alt="Dr. Caroline Truong, Board-Eligible Prosthodontist">
             </div>
             <div class="doctor-bio">
                 <h3>Meet Dr. Caroline Truong, DMD, MS</h3>
@@ -935,7 +938,7 @@
                         <p><strong>Best for:</strong> One or more missing teeth where you want a permanent, natural-looking solution.</p>
                     </div>
                     <div class="service-gallery">
-                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281133_maxresdefault.jpg" alt="Dental implant before and after results">
+                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281133_maxresdefault.jpg" alt="Dental implant before and after transformation showing natural-looking results">
                     </div>
                 </div>
 
@@ -947,7 +950,7 @@
                         <p><strong>Best for:</strong> Full mouth reconstruction where you want stability, comfort, and the ability to eat whatever you want.</p>
                     </div>
                     <div class="service-gallery">
-                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281132_Untitled%20design%20(73).avif" alt="Implant-supported denture results">
+                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281132_Untitled%20design%20(73).avif" alt="Patient smiling confidently after implant-supported denture restoration showing natural appearance">
                     </div>
                 </div>
 
@@ -959,7 +962,7 @@
                         <p><strong>Best for:</strong> Patients who've lost all or most teeth and want a permanent, full-mouth solution in minimal time.</p>
                     </div>
                     <div class="service-gallery">
-                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281131_Untitled%20design%20(75).avif" alt="All-on-4 implant transformation">
+                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281131_Untitled%20design%20(75).avif" alt="Complete full-mouth All-on-4 implant transformation with perfect smile">
                     </div>
                 </div>
 
@@ -971,7 +974,7 @@
                         <p><strong>Why it matters:</strong> No gaps. No embarrassment. No metal temp teeth. Immediate confidence.</p>
                     </div>
                     <div class="service-gallery">
-                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281134_maxresdefault%20(1).jpg" alt="Same-day teeth results">
+                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281134_maxresdefault%20(1).jpg" alt="Same-day teeth patient result showing complete smile delivered in single appointment">
                     </div>
                 </div>
             </div>
@@ -1010,7 +1013,7 @@
             <div class="results-grid">
                 <div class="result-card">
                     <div class="result-image">
-                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281130_Untitled%20design%20-%202025-03-06T133828.318.avif" alt="Patient transformation case 1">
+                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281130_Untitled%20design%20-%202025-03-06T133828.318.avif" alt="Real patient smiling after full-arch implant restoration">
                     </div>
                     <p style="color: var(--text-secondary); margin: 0;"><strong>Full-Arch Implant Restoration</strong></p>
                     <p class="result-quote">"I'm not in pain anymore. I feel like myself again."</p>
@@ -1018,7 +1021,7 @@
 
                 <div class="result-card">
                     <div class="result-image">
-                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281132_Untitled%20design%20(73).avif" alt="Patient transformation case 2">
+                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281132_Untitled%20design%20(73).avif" alt="Patient transformation showing confident smile after same-day denture procedure">
                     </div>
                     <p style="color: var(--text-secondary); margin: 0;"><strong>Same-Day Denture Transformation</strong></p>
                     <p class="result-quote">"This has changed my life; I tell everyone about my new smile."</p>
@@ -1026,7 +1029,7 @@
 
                 <div class="result-card">
                     <div class="result-image">
-                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281131_Untitled%20design%20(75).avif" alt="Patient transformation case 3">
+                        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281131_Untitled%20design%20(75).avif" alt="Complete smile restoration before and after showing dramatic transformation">
                     </div>
                     <p style="color: var(--text-secondary); margin: 0;"><strong>Complete Smile Restoration</strong></p>
                     <p class="result-quote">"I feel beautiful. I can smile in photos now without hiding."</p>
@@ -1035,11 +1038,11 @@
         </div>
     </section>
 
-    <!-- Community Section -->
+    <!-- Lab Section (UNIQUE) -->
     <section class="community-section">
         <div class="container community-content">
             <div class="community-image">
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281130_Untitled%20design%20-%202025-03-06T133828.318.avif" alt="Dr. Truong's volunteer work">
+                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281130_Untitled%20design%20-%202025-03-06T133828.318.avif" alt="Dr. Truong in clinic with patient demonstrating compassionate care">
             </div>
             <div class="community-text">
                 <h3>Beyond the Chair</h3>
@@ -1053,7 +1056,7 @@
     <section id="contact">
         <div class="container location-cta">
             <div class="map-placeholder">
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/68a38c11b295882391cd575a_%5BJollie%20Smiles%5D%20Dental%20Implant%20-%20NPG%20Magazine%20%2B%20Gift%20Card%20(1).png" alt="Jolie Smiles location map">
+                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/68a38c11b295882391cd575a_%5BJollie%20Smiles%5D%20Dental%20Implant%20-%20NPG%20Magazine%20%2B%20Gift%20Card%20(1).png" alt="Jolie Smiles location in Odessa, Florida">
             </div>
             <div>
                 <h3>Ready to Stop Hiding Your Smile?</h3>
