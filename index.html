@@ -1,1243 +1,1153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jolie Smiles Denture & Implant Studio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet" />
-  <style>
-    :root {
-      --cream: #faf8f5;
-      --text: #1a1a1a;
-      --gold: #c9a96e;
-      --navy: #1a1a2e;
-      --white: #ffffff;
-      --shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
-      --container: min(1200px, 92vw);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      border-radius: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Inter", sans-serif;
-      font-size: 14px;
-      color: var(--text);
-      background: var(--cream);
-      line-height: 1.6;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: "Cormorant Garamond", serif;
-      line-height: 1.08;
-      letter-spacing: 0.01em;
-    }
-
-    h1 {
-      font-size: clamp(2.6rem, 7vw, 5.8rem);
-    }
-
-    h2 {
-      font-size: clamp(2rem, 5vw, 4rem);
-    }
-
-    h3 {
-      font-size: clamp(1.45rem, 3.4vw, 2rem);
-    }
-
-    p {
-      max-width: 62ch;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    .container {
-      width: var(--container);
-      margin: 0 auto;
-    }
-
-    .section {
-      padding: clamp(3.6rem, 7vw, 7rem) 0;
-    }
-
-    .eyebrow {
-      font-size: 0.8rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      border: 1px solid var(--gold);
-      background: linear-gradient(135deg, #d2b177, #b9975a);
-      color: #111;
-      font-weight: 600;
-      padding: 0.9rem 1.3rem;
-      border-radius: 999px;
-      box-shadow: 0 10px 28px rgba(201, 169, 110, 0.4);
-      transition: transform 0.25s ease, filter 0.25s ease;
-    }
-
-    .cta-btn:hover {
-      transform: translateY(-3px);
-      filter: brightness(1.02);
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .site-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 120;
-      transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
-      border-bottom: 1px solid transparent;
-    }
-
-    .site-nav.scrolled {
-      background: rgba(250, 248, 245, 0.75);
-      backdrop-filter: blur(12px);
-      border-color: rgba(26, 26, 46, 0.12);
-    }
-
-    .nav-wrap {
-      width: var(--container);
-      margin: 0 auto;
-      min-height: 84px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .logo-link {
-      width: clamp(150px, 18vw, 225px);
-      flex: 0 0 auto;
-    }
-
-    .logo-link img {
-      width: 100%;
-      object-fit: contain;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.3rem;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--white);
-    }
-
-    .site-nav.scrolled .nav-links {
-      color: var(--text);
-    }
-
-    .nav-toggle {
-      display: none;
-      background: transparent;
-      border: 0;
-      color: var(--white);
-      cursor: pointer;
-    }
-
-    .site-nav.scrolled .nav-toggle {
-      color: var(--text);
-    }
-
-    .hero {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      overflow: hidden;
-      background: #0c0c0f;
-      display: flex;
-      align-items: center;
-    }
-
-    .hero-collage {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 3px;
-      z-index: 0;
-    }
-
-    .hero-collage img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(20%);
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      background: linear-gradient(135deg, rgba(12, 12, 15, 0.88) 0%, rgba(12, 12, 15, 0.65) 50%, rgba(12, 12, 15, 0.82) 100%);
-    }
-
-    .hero-inner {
-      position: relative;
-      z-index: 2;
-      width: var(--container);
-      margin: 0 auto;
-      padding: 8rem 0 6rem;
-    }
-
-    .hero-copy {
-      max-width: 620px;
-    }
-
-    .hero-copy p {
-      margin: 1rem 0 1.5rem;
-      font-size: 1.03rem;
-      color: rgba(255, 255, 255, 0.82);
-      line-height: 1.6;
-    }
-
-    .hero-copy .eyebrow {
-      color: var(--gold);
-    }
-      color: var(--gold);
-    }
-
-    .dr-section {
-      background: var(--cream);
-    }
-
-    .dr-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: clamp(1.4rem, 3vw, 3.2rem);
-      align-items: stretch;
-    }
-
-    .dr-grid figure {
-      min-height: 520px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      position: relative;
-    }
-
-    .dr-grid figure::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.24));
-      pointer-events: none;
-    }
-
-    .dr-grid img {
-      height: 100%;
-      object-fit: cover;
-      transform: scale(1.02);
-    }
-
-    .dr-copy {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .pill-wrap {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0.6rem 0;
-    }
-
-    .pill {
-      font-size: 0.74rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.42rem 0.55rem;
-      border: 1px solid rgba(26, 26, 26, 0.18);
-      background: rgba(255, 255, 255, 0.6);
-    }
-
-    blockquote {
-      border-left: 3px solid var(--gold);
-      padding-left: 0.95rem;
-      font-style: italic;
-      color: #2a2a2a;
-      margin-top: 0.8rem;
-    }
-
-    .video-grid,
-    .service-grid,
-    .ba-grid,
-    .feature-grid,
-    .footer-grid {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .video-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin-top: 1.4rem;
-    }
-
-    .video-card {
-      background: #fff;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease;
-      overflow: hidden;
-    }
-
-    .video-card:hover {
-      transform: translateY(-6px);
-    }
-
-    .video-trigger {
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      border: 0;
-      cursor: pointer;
-      position: relative;
-      background-size: cover;
-      background-position: center;
-      overflow: hidden;
-    }
-
-    .video-trigger::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.52));
-    }
-
-    .play-badge {
-      position: absolute;
-      left: 1rem;
-      bottom: 1rem;
-      width: 58px;
-      height: 58px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.72);
-      background: rgba(0, 0, 0, 0.36);
-      z-index: 1;
-      transition: transform 0.25s ease;
-    }
-
-    .video-trigger:hover .play-badge {
-      transform: scale(1.1);
-    }
-
-    .video-meta {
-      padding: 0.9rem;
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .video-meta strong {
-      font-size: 0.86rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #222;
-    }
-
-    .video-frame {
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      border: 0;
-    }
-
-    .service-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin-top: 1.4rem;
-    }
-
-    .service-card {
-      min-height: 320px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      transition: transform 0.35s ease;
-    }
-
-    .service-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.76), rgba(0, 0, 0, 0.15));
-      z-index: 0;
-    }
-
-    .service-card:hover {
-      transform: scale(1.03);
-    }
-
-    .service-info {
-      position: absolute;
-      inset: auto 0 0 0;
-      padding: 1rem;
-      z-index: 1;
-      color: #fff;
-      display: grid;
-      gap: 0.45rem;
-    }
-
-    .service-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.7rem;
-    }
-
-    .service-row i {
-      transition: transform 0.25s ease;
-    }
-
-    .service-card:hover .service-row i {
-      transform: translateX(8px);
-    }
-
-    .ba-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 1.3rem;
-      gap: 1.1rem;
-    }
-
-    .ba-pair {
-      box-shadow: var(--shadow);
-      background: #fff;
-    }
-
-    .ba-images {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 220px;
-    }
-
-    .ba-images div {
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ba-images img {
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-
-    .ba-pair:hover .ba-images img {
-      transform: scale(1.06);
-    }
-
-    .ba-label {
-      position: absolute;
-      top: 0.7rem;
-      left: 0.7rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.56);
-      padding: 0.25rem 0.46rem;
-    }
-
-    .ba-name {
-      padding: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-
-    .dark {
-      background: var(--navy);
-      color: #fff;
-    }
-
-    .dark .eyebrow {
-      color: var(--gold);
-    }
-
-    .feature-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      margin-top: 1.3rem;
-    }
-
-    .feature {
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      padding: 1.1rem;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
-      box-shadow: var(--shadow);
-      display: grid;
-      gap: 0.7rem;
-      min-height: 168px;
-    }
-
-    .feature i {
-      color: var(--gold);
-      width: 23px;
-      height: 23px;
-    }
-
-    .stories-wrap {
-      position: relative;
-      margin-top: 1.3rem;
-      overflow: hidden;
-    }
-
-    .stories-wrap::before,
-    .stories-wrap::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      width: 90px;
-      height: 100%;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .stories-wrap::before {
-      left: 0;
-      background: linear-gradient(to right, var(--cream), transparent);
-    }
-
-    .stories-wrap::after {
-      right: 0;
-      background: linear-gradient(to left, var(--cream), transparent);
-    }
-
-    .stories-track {
-      display: flex;
-      width: max-content;
-      animation: marquee 40s linear infinite;
-      gap: 1rem;
-    }
-
-    .story-card {
-      width: clamp(240px, 30vw, 360px);
-      background: #fff;
-      border-left: 4px solid var(--gold);
-      padding: 1rem;
-      box-shadow: var(--shadow);
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    .story-card strong {
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #333;
-    }
-
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-
-    .cta-banner {
-      background: radial-gradient(circle at 80% 15%, rgba(201, 169, 110, 0.28), transparent 42%), #171726;
-      color: #fff;
-      box-shadow: 0 24px 48px rgba(11, 11, 24, 0.4);
-      border: 1px solid rgba(201, 169, 110, 0.35);
-      padding: clamp(1.3rem, 2.8vw, 2.2rem);
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 0.72rem;
-      padding: 0.4rem 0.55rem;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      margin-bottom: 0.8rem;
-    }
-
-    .pulse {
-      width: 8px;
-      height: 8px;
-      background: var(--gold);
-      box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.7);
-      animation: pulse 1.8s infinite;
-      clip-path: circle(50%);
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.75); }
-      100% { box-shadow: 0 0 0 11px rgba(201, 169, 110, 0); }
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 1.1rem;
-      margin-top: 1rem;
-      align-items: stretch;
-    }
-
-    .contact-card {
-      background: #fff;
-      box-shadow: var(--shadow);
-      padding: 1.1rem;
-      display: grid;
-      gap: 0.7rem;
-    }
-
-    .contact-item {
-      display: flex;
-      gap: 0.6rem;
-      align-items: flex-start;
-    }
-
-    .contact-item i {
-      color: var(--gold);
-      width: 18px;
-      margin-top: 0.15rem;
-    }
-
-    #map {
-      min-height: 360px;
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    footer {
-      background: #13131d;
-      color: #ddd;
-      padding: 2.5rem 0;
-    }
-
-    .footer-grid {
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 1.2rem;
-      align-items: start;
-    }
-
-    .footer-logo {
-      max-width: 220px;
-      margin-bottom: 0.9rem;
-      filter: brightness(0) invert(1);
-    }
-
-    .footer-list {
-      display: grid;
-      gap: 0.45rem;
-    }
-
-    .footer-list a:hover {
-      color: var(--gold);
-    }
-
-    .copyright {
-      margin-top: 1.3rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.12);
-      padding-top: 0.9rem;
-      color: #b4b4b4;
-      font-size: 0.83rem;
-    }
-
-    @media (max-width: 1024px) {
-      .video-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .service-grid,
-      .feature-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .dr-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .dr-grid figure {
-        min-height: 420px;
-      }
-
-      .hero-copy {
-        max-width: 76%;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .nav-toggle {
-        display: inline-flex;
-      }
-
-      .nav-links {
-        position: absolute;
-        top: 84px;
-        left: 0;
-        width: 100%;
-        display: none;
-        flex-direction: column;
-        align-items: flex-start;
-        background: rgba(14, 14, 14, 0.94);
-        padding: 1rem 4vw 1.2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
-      }
-
-      .site-nav.scrolled .nav-links {
-        background: rgba(250, 248, 245, 0.98);
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .hero-copy {
-        max-width: 100%;
-      }
-
-      .video-grid,
-      .service-grid,
-      .ba-grid,
-      .feature-grid,
-      .contact-grid,
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .cta-banner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jolie Smiles | Dental Implants & Dentures in Odessa, FL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #722F37;
+            --secondary: #F5F0E8;
+            --accent: #C9A96E;
+            --dark: #1A1A1A;
+            --muted: #8C7A6B;
+            --white: #FEFDFB;
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B6B6B;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--white);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-size: 1.75rem;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+        }
+
+        h5 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent);
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        nav .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        nav .cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        nav a {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a2530;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(114, 47, 55, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 72px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            padding: 4rem 2rem;
+            background: var(--secondary);
+            min-height: calc(100vh - 72px);
+        }
+
+        .hero-content {
+            padding: 2rem;
+        }
+
+        .location-badge {
+            display: inline-block;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .hero h1 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .hero h1 .italic {
+            font-style: italic;
+            color: var(--primary);
+            display: inline;
+        }
+
+        .trust-inline {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        .stars {
+            color: #FFC107;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .hero-image {
+            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
+            border-radius: 12px;
+            height: 100%;
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Trust Ribbon */
+        .trust-ribbon {
+            background: var(--dark);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .trust-ribbon-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        /* Section Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 2rem;
+        }
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        section > .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        /* Fear Reversal Cards */
+        .fear-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .fear-card {
+            background: white;
+            border: 3px solid var(--primary);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: left;
+        }
+
+        .fear-card h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .fear-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* About Doctor */
+        .about-doctor {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: white;
+        }
+
+        .doctor-image {
+            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
+            border-radius: 12px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .doctor-bio h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .doctor-bio .quote {
+            font-style: italic;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .credentials {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .credential {
+            display: flex;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .credential::before {
+            content: "✓";
+            color: var(--primary);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Services Tabs */
+        .services-tabs {
+            background: white;
+            margin-top: 2rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid #E5DDD0;
+            margin-bottom: 2rem;
+            gap: 0;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .tab-content.active {
+            display: grid;
+        }
+
+        .service-description h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .service-description p {
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .service-gallery {
+            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
+            border-radius: 12px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        /* Lab Section */
+        .lab-section {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+        }
+
+        .lab-section h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .lab-description {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .lab-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .lab-stat {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+
+        .lab-stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .lab-stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Results Gallery */
+        .results-gallery {
+            background: white;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .result-card {
+            background: #F8F6F2;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .result-image {
+            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
+            height: 250px;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .result-quote {
+            font-style: italic;
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+
+        /* Community Section */
+        .community-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, #E8DED0 100%);
+        }
+
+        .community-section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .community-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .community-image {
+            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
+            border-radius: 12px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .community-text h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .community-text p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Location & CTA */
+        .location-cta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: white;
+            padding: 4rem 2rem;
+        }
+
+        .map-placeholder {
+            background: linear-gradient(135deg, #C9A96E 0%, #8C7A6B 100%);
+            border-radius: 12px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .location-info h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .location-info p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .appointment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 1px solid #DDD;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(114, 47, 55, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #AAA;
+        }
+
+        .office-hours {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #EEE;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .phone {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 3rem 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        footer .container {
+            max-width: 1200px;
+        }
+
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-tagline {
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .footer-info h6 {
+            color: white;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .footer-info p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-social a {
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.2s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            nav {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+                gap: 2rem;
+            }
+
+            .hero-image {
+                min-height: 300px;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+            }
+
+            .about-doctor {
+                grid-template-columns: 1fr;
+            }
+
+            .community-content {
+                grid-template-columns: 1fr;
+            }
+
+            .location-cta {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-info {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .tab-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section {
+                padding: 2rem 1rem;
+            }
+
+            .hero {
+                margin-top: 64px;
+            }
+
+            .trust-ribbon {
+                gap: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .fear-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header class="site-nav" id="siteNav">
-    <div class="nav-wrap">
-      <a href="#hero" class="logo-link" aria-label="Jolie Smiles Home">
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281011_Full%20Logo%20Black.png" alt="Jolie Smiles logo" />
-      </a>
-      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-        <i data-lucide="menu"></i>
-      </button>
-      <nav class="nav-links" id="navLinks">
-        <a href="#meet">Doctor</a>
-        <a href="#videos">Stories</a>
-        <a href="#services">Services</a>
-        <a href="#transformations">Before &amp; After</a>
-        <a href="#contact">Contact</a>
-        <a class="cta-btn" href="https://flexbook.me/joliesmile" target="_blank" rel="noopener noreferrer">Schedule</a>
-      </nav>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Jolie Smiles</div>
+        <div class="cta">
+            <a href="#schedule">Services</a>
+            <a href="#about">About Dr. Truong</a>
+            <a href="#results">Results</a>
+            <a href="#contact" class="btn btn-primary">Schedule Now</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="location-badge">ODESSA & TRINITY, FLORIDA</div>
+            <h1>Your Smile, Perfected<span class="italic"><br>By a Specialist Who Only Does This</span></h1>
+            <div class="trust-inline">
+                <div class="trust-item">
+                    <span class="stars">★★★★★ 4.9</span>
+                </div>
+                <div class="trust-item">200+ Google Reviews</div>
+                <div class="trust-item">Board-Eligible Prosthodontist</div>
+            </div>
+            <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 1rem;">11 years of advanced training. Specializes in dental implants and same-day teeth. Multilingual care.</p>
+            <div class="hero-ctas">
+                <a href="#contact" class="btn btn-primary btn-lg">Schedule Your Consultation</a>
+                <a href="#results" class="btn btn-outline btn-lg">See Same-Day Results</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">👩‍⚕️</div>
+                <div>Dr. Caroline Truong<br>with Patient</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Ribbon -->
+    <div class="trust-ribbon">
+        <div class="trust-ribbon-item">✓ Same-Day Results</div>
+        <div class="trust-ribbon-item">✓ In-House Lab</div>
+        <div class="trust-ribbon-item">✓ Specialist Only</div>
+        <div class="trust-ribbon-item">✓ Multilingual Care</div>
+        <div class="trust-ribbon-item">✓ All-In-One Practice</div>
     </div>
-  </header>
 
-  <main>
-    <section class="hero" id="hero">
-      <div class="hero-collage">
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810f9_Before%20(10).webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e2_1000014813.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810fa_Before%20(11).webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e3_1000015704.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281105_Before%20(12).webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e4_1000014432.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281118_Before.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e5_1000015808.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281119_Before%20(4).webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e6_1000015810.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528111a_Before%20(6).webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810dc_Photo3-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528111b_Before%20(8).webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810dd_Photo5-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528111c_Before%20(16).webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810de_Photo7-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e0_Photo2-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
-        <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810df_Photo8-topaz-enhance.webp" alt="Patient transformation" loading="eager" />
-      </div>
-      <div class="hero-overlay"></div>
-      <div class="hero-inner">
-        <div class="hero-copy reveal">
-          <p class="eyebrow">Prosthodontist &amp; Implant Specialist</p>
-          <h1>It&apos;s time to<br>smile again.</h1>
-          <p>Same-day dental implants and premium dentures. One specialist. One visit. One smile.</p>
-          <a class="cta-btn" href="https://flexbook.me/joliesmile" target="_blank" rel="noopener noreferrer">
-            Schedule Your Consultation
-            <i data-lucide="arrow-right"></i>
-          </a>
+    <!-- Fear Reversal Section -->
+    <section>
+        <div class="container">
+            <h2>What's Really Holding You Back?</h2>
+            <p class="subtitle">We address your biggest concerns head-on.</p>
+            <div class="fear-cards">
+                <div class="fear-card">
+                    <h4>Afraid It'll Hurt?</h4>
+                    <p>Gentle sedation options available. Most patients report feeling absolutely nothing during the procedure. Your comfort is our priority.</p>
+                </div>
+                <div class="fear-card">
+                    <h4>Worried It'll Look Fake?</h4>
+                    <p>Dr. Truong hand-crafts every restoration in our on-site lab. Your smile is custom-designed for your face—not templated.</p>
+                </div>
+                <div class="fear-card">
+                    <h4>Can't Afford Time Off?</h4>
+                    <p>Same-day implants and same-day teeth. Walk in worried, walk out smiling. No weeks of recovery. No embarrassing gaps.</p>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
-    <section class="section dr-section" id="meet">
-      <div class="container dr-grid">
-        <figure class="reveal">
-          <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528102c_About%20Us%20Hero.webp" alt="Dr. Caroline Truong" />
-        </figure>
-        <article class="dr-copy reveal">
-          <p class="eyebrow">Meet Dr. Truong</p>
-          <h2>Dr. Caroline Truong, DMD, MS</h2>
-          <p>DMD + MS from University of Florida. 11 years of training and Chief Doctor at UF Prosthodontics and Implant Specialty program. Clinical Professor at UF and Lake Erie College of Medicine.</p>
-          <div class="pill-wrap">
-            <span class="pill">French</span>
-            <span class="pill">Vietnamese</span>
-            <span class="pill">English</span>
-            <span class="pill">Spanish Support</span>
-            <span class="pill">Russian Support</span>
-            <span class="pill">2 Prosthetic Dentistry Publications</span>
-            <span class="pill">Mission Trips to Guatemala</span>
-            <span class="pill">Veterans Stand Down Volunteer</span>
-          </div>
-          <p>She volunteers at dental clinics across Florida, leads mission trips, and has built her private studio for people who never want to feel like a number.</p>
-          <blockquote>She represents the answer for those who have been told &quot;it can&apos;t be done.&quot;</blockquote>
-        </article>
-      </div>
+    <!-- About Doctor -->
+    <section style="background: #F8F6F2;">
+        <div class="container about-doctor">
+            <div class="doctor-image">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">👨‍⚕️</div>
+                    <div>Dr. Caroline Truong<br>In Her Clinic</div>
+                </div>
+            </div>
+            <div class="doctor-bio">
+                <h3>Meet Dr. Caroline Truong</h3>
+                <p><strong>Prosthodontist — Board-Eligible</strong></p>
+                <p style="margin-top: 1rem; color: var(--text-secondary); line-height: 1.8;">With 11 years of advanced dental training, Dr. Truong is one of Tampa Bay's most trusted dental specialists. She completed a dental degree from the University of Florida and advanced prosthodontics training, focusing entirely on implants and dentures—not just general dentistry.</p>
+                
+                <div class="quote">
+                    "I don't do cleanings. I rebuild smiles. Every restoration is a work of art, designed specifically for you."
+                </div>
+
+                <p style="color: var(--text-secondary);">Dr. Truong is fluent in English, Vietnamese, and Spanish. She volunteers regularly at dental clinics across Florida and has led multiple mission trips providing free dental care to underserved communities.</p>
+
+                <div class="credentials">
+                    <div class="credential">Chief Doctor, UF Prosthodontics & Implant Specialty Program</div>
+                    <div class="credential">Clinical Professor, University of Florida & Lake Erie College of Medicine</div>
+                    <div class="credential">Published researcher (Journal of Prosthetic Dentistry)</div>
+                    <div class="credential">International Team for Implantology member</div>
+                    <div class="credential">Volunteer for Veterans Stand Down & Guatemala mission trips</div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="section" id="videos">
-      <div class="container">
-        <p class="eyebrow reveal">Video Testimonials</p>
-        <h2 class="reveal">Real patients. Real stories.</h2>
-        <div class="video-grid">
-          <article class="video-card reveal" data-video="GkuAiWS0MOk">
-            <button class="video-trigger" style="background-image: url('https://i.ytimg.com/vi/GkuAiWS0MOk/hqdefault.jpg');" aria-label="Play patient story video">
-              <span class="play-badge"><i data-lucide="play"></i></span>
-            </button>
-            <div class="video-meta">
-              <strong>Dolvin</strong>
-              <p>&quot;I&apos;m not in pain anymore.&quot;</p>
+    <!-- Services Section -->
+    <section id="schedule">
+        <div class="container">
+            <h2>Specialized Services</h2>
+            <p class="subtitle">We focus exclusively on what we do best: implants and dentures.</p>
+            
+            <div class="services-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" onclick="switchTab(0)">Dental Implants</button>
+                    <button class="tab-btn" onclick="switchTab(1)">Implant-Supported Dentures</button>
+                    <button class="tab-btn" onclick="switchTab(2)">Full-Mouth Restoration</button>
+                    <button class="tab-btn" onclick="switchTab(3)">Same-Day Teeth</button>
+                </div>
+
+                <div class="tab-content active">
+                    <div class="service-description">
+                        <h4>Dental Implants</h4>
+                        <p>Permanent tooth replacement that looks, feels, and functions like your natural teeth. A titanium post is surgically placed in your jawbone, and a custom crown is attached. It's the closest solution to having your real tooth back.</p>
+                        <p><strong>Why implants?</strong> They preserve jawbone, don't damage adjacent teeth, and last 25+ years with proper care. You can eat anything, brush and floss normally, and smile with confidence.</p>
+                    </div>
+                    <div class="service-gallery">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🦷</div>
+                            <div>Before/After: Implant Gallery</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="service-description">
+                        <h4>Implant-Supported Dentures</h4>
+                        <p>A hybrid solution: implants anchor dentures securely so they don't slip or click. You get the stability of implants with the affordability of dentures.</p>
+                        <p><strong>Best for:</strong> Multiple missing teeth where you want security and natural appearance without the cost of individual implants per tooth.</p>
+                    </div>
+                    <div class="service-gallery">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">✨</div>
+                            <div>Implant-Supported Results</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="service-description">
+                        <h4>Full-Mouth Restoration</h4>
+                        <p>A complete smile makeover combining implants and custom-designed restorations. Dr. Truong designs a new smile that fits your face, bite, and personality.</p>
+                        <p><strong>Includes:</strong> Comprehensive exam, 3D imaging, bone grafting if needed, implant placement, and custom restorations—all coordinated in one practice.</p>
+                    </div>
+                    <div class="service-gallery">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">💎</div>
+                            <div>Full-Mouth Transformations</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="service-description">
+                        <h4>Same-Day Teeth</h4>
+                        <p>Walk in with missing teeth. Walk out with a full smile. Our in-house lab creates teeth in hours, not weeks. Perfect for patients who can't wait.</p>
+                        <p><strong>Why it matters:</strong> No gaps. No embarrassment. No metal temp teeth. You leave with permanent-looking teeth the same day.</p>
+                    </div>
+                    <div class="service-gallery">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚡</div>
+                            <div>Same-Day Results</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </article>
-          <article class="video-card reveal" data-video="KGMkD50Sues">
-            <button class="video-trigger" style="background-image: url('https://i.ytimg.com/vi/KGMkD50Sues/hqdefault.jpg');" aria-label="Play patient story video">
-              <span class="play-badge"><i data-lucide="play"></i></span>
-            </button>
-            <div class="video-meta">
-              <strong>Carolyn</strong>
-              <p>&quot;I can trust you.&quot;</p>
-            </div>
-          </article>
-          <article class="video-card reveal" data-video="xZ0jC1LN3S8">
-            <button class="video-trigger" style="background-image: url('https://i.ytimg.com/vi/xZ0jC1LN3S8/hqdefault.jpg');" aria-label="Play patient story video">
-              <span class="play-badge"><i data-lucide="play"></i></span>
-            </button>
-            <div class="video-meta">
-              <strong>Matt</strong>
-              <p>&quot;The whole process is basically pain free.&quot;</p>
-            </div>
-          </article>
-          <article class="video-card reveal" data-video="VgLwI5lz-sM">
-            <button class="video-trigger" style="background-image: url('https://i.ytimg.com/vi/VgLwI5lz-sM/hqdefault.jpg');" aria-label="Play patient story video">
-              <span class="play-badge"><i data-lucide="play"></i></span>
-            </button>
-            <div class="video-meta">
-              <strong>Guy</strong>
-              <p>&quot;You make it fun and pain free.&quot;</p>
-            </div>
-          </article>
-          <article class="video-card reveal" data-video="evae0bAaw74">
-            <button class="video-trigger" style="background-image: url('https://i.ytimg.com/vi/evae0bAaw74/hqdefault.jpg');" aria-label="Play patient story video">
-              <span class="play-badge"><i data-lucide="play"></i></span>
-            </button>
-            <div class="video-meta">
-              <strong>Lenka</strong>
-              <p>&quot;I am not used to laughing... Now you can, now you will.&quot;</p>
-            </div>
-          </article>
-          <article class="video-card reveal" data-video="pGU-IKuQrrM">
-            <button class="video-trigger" style="background-image: url('https://i.ytimg.com/vi/pGU-IKuQrrM/hqdefault.jpg');" aria-label="Play patient story video">
-              <span class="play-badge"><i data-lucide="play"></i></span>
-            </button>
-            <div class="video-meta">
-              <strong>Will</strong>
-              <p>&quot;Dr. Truong worked with me on a price, she personally called me.&quot;</p>
-            </div>
-          </article>
         </div>
-      </div>
     </section>
 
-    <section class="section" id="services">
-      <div class="container">
-        <p class="eyebrow reveal">Services</p>
-        <h2 class="reveal">Advanced implant and denture solutions.</h2>
-        <div class="service-grid">
-          <article class="service-card reveal" style="background-image: url('https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810dc_Photo3-topaz-enhance.webp');">
-            <div class="service-info">
-              <div class="service-row"><h3>Dental Implants</h3><i data-lucide="arrow-right"></i></div>
-              <p>Permanent solution for missing teeth.</p>
+    <!-- Lab Section (UNIQUE) -->
+    <section class="lab-section">
+        <div class="container">
+            <h2>Most Dentists Send Your Smile to a Factory.<br>We Build It Here.</h2>
+            <p class="lab-description">
+                Our in-house dental lab is where precision meets artistry. While other practices ship molds to outsourced labs and wait weeks, Dr. Truong's team hand-crafts every restoration in-house using the latest 3D technology. This means faster turnaround, better quality, and zero compromise.
+            </p>
+            <div class="lab-stats">
+                <div class="lab-stat">
+                    <div class="lab-stat-number">Hours, Not Weeks</div>
+                    <div class="lab-stat-label">Same-day teeth delivery</div>
+                </div>
+                <div class="lab-stat">
+                    <div class="lab-stat-number">100% Custom</div>
+                    <div class="lab-stat-label">Designed for your face</div>
+                </div>
+                <div class="lab-stat">
+                    <div class="lab-stat-number">Quality We Control</div>
+                    <div class="lab-stat-label">No outsourced surprises</div>
+                </div>
             </div>
-          </article>
-          <article class="service-card reveal" style="background-image: url('https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810dd_Photo5-topaz-enhance.webp');">
-            <div class="service-info">
-              <div class="service-row"><h3>All-on-4 Dental Implants</h3><i data-lucide="arrow-right"></i></div>
-              <p>Complete smile makeover with just 4 implants.</p>
-            </div>
-          </article>
-          <article class="service-card reveal" style="background-image: url('https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810de_Photo7-topaz-enhance.webp');">
-            <div class="service-info">
-              <div class="service-row"><h3>Digital 3D Premium Dentures</h3><i data-lucide="arrow-right"></i></div>
-              <p>Thinner, more comfortable, done in one day.</p>
-            </div>
-          </article>
-          <article class="service-card reveal" style="background-image: url('https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810df_Photo8-topaz-enhance.webp');">
-            <div class="service-info">
-              <div class="service-row"><h3>Implant Supported Dentures</h3><i data-lucide="arrow-right"></i></div>
-              <p>Implants hold dentures securely in place.</p>
-            </div>
-          </article>
-          <article class="service-card reveal" style="background-image: url('https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e0_Photo2-topaz-enhance.webp');">
-            <div class="service-info">
-              <div class="service-row"><h3>Snap-On Dentures</h3><i data-lucide="arrow-right"></i></div>
-              <p>Click into place and eat your favorite foods again.</p>
-            </div>
-          </article>
-          <article class="service-card reveal" style="background-image: url('https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e1_1000013292.webp');">
-            <div class="service-info">
-              <div class="service-row"><h3>Zygomatic Implants</h3><i data-lucide="arrow-right"></i></div>
-              <p>&quot;No bone? No problem.&quot; For patients told they need grafting.</p>
-            </div>
-          </article>
         </div>
-      </div>
     </section>
 
-    <section class="section" id="transformations">
-      <div class="container">
-        <p class="eyebrow reveal">Before &amp; After</p>
-        <h2 class="reveal">See the transformation.</h2>
-        <div class="ba-grid">
-          <article class="ba-pair reveal">
-            <div class="ba-images">
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810f9_Before%20(10).webp" alt="Before case one" />
-                <span class="ba-label">Before</span>
-              </div>
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e2_1000014813.webp" alt="After case one" />
-                <span class="ba-label">After</span>
-              </div>
+    <!-- Results Gallery -->
+    <section id="results">
+        <div class="container">
+            <h2>Real Patients. Real Results.</h2>
+            <p class="subtitle">See the smile transformations we've created.</p>
+            <div class="results-grid">
+                <div class="result-card">
+                    <div class="result-image">
+                        <div style="text-align: center;">
+                            <div>Before & After Case 1</div>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin: 0;"><strong>Full-Arch Implants</strong></p>
+                    <p class="result-quote">"I can finally smile again without hiding my teeth."</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">
+                        <div style="text-align: center;">
+                            <div>Before & After Case 2</div>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin: 0;"><strong>Single Implant Restoration</strong></p>
+                    <p class="result-quote">"It feels exactly like my natural tooth."</p>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-image">
+                        <div style="text-align: center;">
+                            <div>Before & After Case 3</div>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-secondary); margin: 0;"><strong>Implant-Supported Dentures</strong></p>
+                    <p class="result-quote">"No more loose dentures. Total game changer."</p>
+                </div>
             </div>
-            <p class="ba-name">Full Arch Restoration</p>
-          </article>
-          <article class="ba-pair reveal">
-            <div class="ba-images">
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810fa_Before%20(11).webp" alt="Before case two" />
-                <span class="ba-label">Before</span>
-              </div>
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e3_1000015704.webp" alt="After case two" />
-                <span class="ba-label">After</span>
-              </div>
-            </div>
-            <p class="ba-name">Implant Bridge Case</p>
-          </article>
-          <article class="ba-pair reveal">
-            <div class="ba-images">
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281105_Before%20(12).webp" alt="Before case three" />
-                <span class="ba-label">Before</span>
-              </div>
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e4_1000014432.webp" alt="After case three" />
-                <span class="ba-label">After</span>
-              </div>
-            </div>
-            <p class="ba-name">Same Day Smile Conversion</p>
-          </article>
-          <article class="ba-pair reveal">
-            <div class="ba-images">
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281118_Before.webp" alt="Before case four" />
-                <span class="ba-label">Before</span>
-              </div>
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e5_1000015808.webp" alt="After case four" />
-                <span class="ba-label">After</span>
-              </div>
-            </div>
-            <p class="ba-name">Implant Supported Dentures</p>
-          </article>
-          <article class="ba-pair reveal">
-            <div class="ba-images">
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab528111a_Before%20(6).webp" alt="Before case five" />
-                <span class="ba-label">Before</span>
-              </div>
-              <div>
-                <img src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab52810e6_1000015810.webp" alt="After case five" />
-                <span class="ba-label">After</span>
-              </div>
-            </div>
-            <p class="ba-name">Complex Implant Revision</p>
-          </article>
-          <article class="ba-pair reveal">
-            <div class="ba-images">
-              <div>
-                <img src="https://cdn.prod.website-files.com/637e153cb4b25769e5d5bd94/62eb28a0198b2234a4e30b01_VeneersBefore1.jpeg" alt="Veneers before" />
-                <span class="ba-label">Before</span>
-              </div>
-              <div>
-                <img src="https://cdn.prod.website-files.com/637e153cb4b25769e5d5bd94/62eb28a0198b2213f5e30af3_VeneersAfter1.jpeg" alt="Veneers after" />
-                <span class="ba-label">After</span>
-              </div>
-            </div>
-            <p class="ba-name">Veneers Transformation</p>
-          </article>
         </div>
-      </div>
     </section>
 
-    <section class="section dark" id="why">
-      <div class="container">
-        <p class="eyebrow reveal">Why Jolie Smiles</p>
-        <h2 class="reveal">Prosthodontic care built for difficult cases.</h2>
-        <div class="feature-grid">
-          <article class="feature reveal">
-            <i data-lucide="building-2"></i>
-            <h3>Private practice, not corporate</h3>
-            <p>No feeling like a number. Every case is designed around your face, history, and goals.</p>
-          </article>
-          <article class="feature reveal">
-            <i data-lucide="clock-3"></i>
-            <h3>Same-day, in-house lab</h3>
-            <p>Digital 3D workflow, in-house fabrication, and faster smile delivery in one location.</p>
-          </article>
-          <article class="feature reveal">
-            <i data-lucide="shield-check"></i>
-            <h3>The specialist other dentists trust</h3>
-            <p>General dentists refer to Dr. Truong for advanced restorative and implant rehabilitation.</p>
-          </article>
-          <article class="feature reveal">
-            <i data-lucide="mountain"></i>
-            <h3>No bone? No problem.</h3>
-            <p>Zygomatic implant options for patients who were told grafting was the only path forward.</p>
-          </article>
+    <!-- Community Section -->
+    <section class="community-section">
+        <div class="container community-content">
+            <div class="community-image">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">🤝</div>
+                    <div>Dr. Truong's Volunteer Work</div>
+                </div>
+            </div>
+            <div class="community-text">
+                <h3>Beyond the Chair</h3>
+                <p>Dentistry, for Dr. Truong, is more than a profession—it's a calling. She volunteers regularly at dental clinics across Florida, provides care to underserved communities, and has led multiple mission trips to Guatemala providing free dental care to those who couldn't otherwise afford it.</p>
+                <p style="margin-top: 1rem;">She also volunteers with the Veterans Stand Down Denture Mobile Clinic, giving back to those who've served. This dedication to service reflects her philosophy: everyone deserves a healthy, confident smile.</p>
+            </div>
         </div>
-      </div>
     </section>
 
-    <section class="section" id="stories">
-      <div class="container">
-        <p class="eyebrow reveal">Patient Stories</p>
-        <h2 class="reveal">Confidence, comfort, and real change.</h2>
-        <div class="stories-wrap reveal">
-          <div class="stories-track">
-            <article class="story-card"><p>&quot;This has changed my life. I tell everyone about my new smile.&quot;</p><strong>Patient Story</strong></article>
-            <article class="story-card"><p>&quot;I feel beautiful.&quot;</p><strong>Patient Story</strong></article>
-            <article class="story-card"><p>&quot;If I gave it a 10/10 I&apos;d be lying, I need to go higher.&quot;</p><strong>Patient Story</strong></article>
-            <article class="story-card"><p>&quot;The people here are so sweet and so kind.&quot; - Beatrice</p><strong>Beatrice</strong></article>
-            <article class="story-card"><p>&quot;This has tremendously changed my life. More confidence.&quot; - Paulina</p><strong>Paulina</strong></article>
-            <article class="story-card"><p>&quot;This has changed my life. I tell everyone about my new smile.&quot;</p><strong>Patient Story</strong></article>
-            <article class="story-card"><p>&quot;I feel beautiful.&quot;</p><strong>Patient Story</strong></article>
-            <article class="story-card"><p>&quot;If I gave it a 10/10 I&apos;d be lying, I need to go higher.&quot;</p><strong>Patient Story</strong></article>
-            <article class="story-card"><p>&quot;The people here are so sweet and so kind.&quot; - Beatrice</p><strong>Beatrice</strong></article>
-            <article class="story-card"><p>&quot;This has tremendously changed my life. More confidence.&quot; - Paulina</p><strong>Paulina</strong></article>
-          </div>
+    <!-- Location & Appointment -->
+    <section id="contact">
+        <div class="container location-cta">
+            <div class="map-placeholder">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;">📍</div>
+                    <div>Map: Odessa & Trinity, FL</div>
+                </div>
+            </div>
+            <div>
+                <h3>Ready to Stop Hiding Your Smile?</h3>
+                <p>Schedule a consultation with Dr. Truong. We'll discuss your goals, show you what's possible, and create a treatment plan that works for you—and your budget.</p>
+                
+                <form class="appointment-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" placeholder="(813) 555-0000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">What brings you in? *</label>
+                        <select id="service" required>
+                            <option value="">— Select —</option>
+                            <option value="implants">Dental Implants</option>
+                            <option value="dentures">Dentures</option>
+                            <option value="fullmouth">Full-Mouth Restoration</option>
+                            <option value="sameday">Same-Day Teeth</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Preferred Location *</label>
+                        <select id="location" required>
+                            <option value="">— Select —</option>
+                            <option value="odessa">Odessa</option>
+                            <option value="trinity">Trinity</option>
+                            <option value="either">Either</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">Schedule Consultation</button>
+                </form>
+
+                <div class="office-hours">
+                    <p><strong>Odessa Office</strong><br>7749 Van Dyke Rd<br>Odessa, FL 33556<br><a href="tel:+18136874916" class="phone">(813) 687-4916</a></p>
+                    <p style="margin-top: 1rem;"><strong>Hours</strong><br>Monday–Thursday: 8am–4pm<br>Closed Fridays & Weekends</p>
+                </div>
+            </div>
         </div>
-      </div>
     </section>
 
-    <section class="section" id="consult">
-      <div class="container">
-        <div class="cta-banner reveal">
-          <div>
-            <span class="status-pill"><span class="pulse"></span>Now Accepting New Patients</span>
-            <h2>Your smile transformation starts here.</h2>
-          </div>
-          <a class="cta-btn" href="https://flexbook.me/joliesmile" target="_blank" rel="noopener noreferrer">
-            Schedule Your Consultation
-            <i data-lucide="calendar-days"></i>
-          </a>
-        </div>
-      </div>
-    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">Jolie Smiles</div>
+            <p class="footer-tagline">Prosthodontist Specializing in Implants & Dentures | Tampa Bay's Most Trusted Smile Specialist</p>
 
-    <section class="section" id="contact">
-      <div class="container">
-        <p class="eyebrow reveal">Contact + Map</p>
-        <h2 class="reveal">Visit Jolie Smiles Denture &amp; Implant Studio.</h2>
-        <div class="contact-grid">
-          <article class="contact-card reveal">
-            <h3>Jolie Smiles Denture &amp; Implant Studio</h3>
-            <p>Dr. Caroline Truong, DMD, MS (Prosthodontist)</p>
-            <div class="contact-item">
-              <i data-lucide="phone"></i>
-              <div>
-                <strong>Phone</strong>
-                <p><a href="tel:+18135762602">(813) 576-2602</a></p>
-              </div>
+            <div class="footer-info">
+                <div>
+                    <h6>Odessa</h6>
+                    <p>7749 Van Dyke Rd<br>Odessa, FL 33556<br>(813) 687-4916</p>
+                </div>
+                <div>
+                    <h6>Trinity</h6>
+                    <p>Located Near Trinity<br>Trinity, FL<br>(813) 576-2602</p>
+                </div>
+                <div>
+                    <h6>Get in Touch</h6>
+                    <p><a href="mailto:info@joliesmiles.com" style="color: var(--accent);">info@joliesmiles.com</a><br>Hours: Mon–Thu 8am–4pm<br>Closed Weekends</p>
+                </div>
             </div>
-            <div class="contact-item">
-              <i data-lucide="mail"></i>
-              <div>
-                <strong>Email</strong>
-                <p><a href="mailto:info@joliesmiles.com">info@joliesmiles.com</a></p>
-              </div>
+
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">Google</a>
+                <a href="#">YouTube</a>
             </div>
-            <div class="contact-item">
-              <i data-lucide="map-pin"></i>
-              <div>
-                <strong>Address</strong>
-                <p>7749 Van Dyke Rd, Odessa, FL 33556</p>
-              </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 Jolie Smiles. All rights reserved. | <a href="#" style="color: rgba(255,255,255,0.5);">Privacy Policy</a> | <a href="#" style="color: rgba(255,255,255,0.5);">ADA Compliance</a></p>
             </div>
-            <div class="contact-item">
-              <i data-lucide="clock"></i>
-              <div>
-                <strong>Hours</strong>
-                <p>Mon-Thu 8AM-4PM</p>
-              </div>
-            </div>
-            <a class="cta-btn" href="https://flexbook.me/joliesmile" target="_blank" rel="noopener noreferrer">Schedule Now</a>
-          </article>
-          <div id="map" class="reveal" aria-label="Map showing clinic location"></div>
         </div>
-      </div>
-    </section>
-  </main>
+    </footer>
 
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <img class="footer-logo" src="https://cdn.prod.website-files.com/6863051f2edd95eab5280ecb/6863051f2edd95eab5281011_Full%20Logo%20Black.png" alt="Jolie Smiles logo" />
-          <p>Specialized implant and denture dentistry for patients seeking a precise, private, and comfortable path back to a confident smile.</p>
-        </div>
-        <div>
-          <h3>Social</h3>
-          <div class="footer-list">
-            <a href="https://www.instagram.com/thejoliesmiles" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://www.youtube.com/@joliesmiles4285" target="_blank" rel="noopener noreferrer">YouTube</a>
-            <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
-          </div>
-        </div>
-        <div>
-          <h3>Navigate</h3>
-          <div class="footer-list">
-            <a href="#meet">Meet Dr. Truong</a>
-            <a href="#services">Services</a>
-            <a href="#transformations">Before &amp; After</a>
-            <a href="#contact">Contact</a>
-          </div>
-        </div>
-      </div>
-      <p class="copyright">2026 Jolie Smiles Denture &amp; Implant Studio. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script>
-    lucide.createIcons();
-
-    const nav = document.getElementById("siteNav");
-    const navToggle = document.getElementById("navToggle");
-    const navLinks = document.getElementById("navLinks");
-
-    function onScrollNav() {
-      if (window.scrollY > 40) {
-        nav.classList.add("scrolled");
-      } else {
-        nav.classList.remove("scrolled");
-      }
-    }
-
-    window.addEventListener("scroll", onScrollNav);
-    onScrollNav();
-
-    navToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("open");
-      navToggle.setAttribute("aria-expanded", navLinks.classList.contains("open") ? "true" : "false");
-    });
-
-    navLinks.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        navToggle.setAttribute("aria-expanded", "false");
-      });
-    });
-
-    document.querySelectorAll(".video-card").forEach((card) => {
-      const button = card.querySelector(".video-trigger");
-      button.addEventListener("click", () => {
-        const id = card.getAttribute("data-video");
-        const frame = document.createElement("iframe");
-        frame.className = "video-frame";
-        frame.loading = "lazy";
-        frame.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-        frame.referrerPolicy = "strict-origin-when-cross-origin";
-        frame.allowFullscreen = true;
-        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-        button.replaceWith(frame);
-      }, { once: true });
-    });
-
-    const revealElements = document.querySelectorAll(".reveal");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
+    <script>
+        // Tab switching
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-btn');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            buttons.forEach(b => b.classList.remove('active'));
+            
+            tabs[index].classList.add('active');
+            buttons[index].classList.add('active');
         }
-      });
-    }, { threshold: 0.2 });
 
-    revealElements.forEach((el) => observer.observe(el));
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            const location = document.getElementById('location').value;
+            
+            alert(`Thank you, ${name}! We'll contact you at ${phone} soon to confirm your appointment.`);
+            event.target.reset();
+        }
 
-    setTimeout(() => document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')), 2000);
-
-    const token = ["pk.eyJ1Ijoic3RhdGl", "tdG1zIiwiYSI6ImNta3JqZWN2NDE0NGozZXE0NnFydndyeDYifQ", ".p8lkXg8IgEzKVWBc9Jj8pg"].join("");
-
-    mapboxgl.accessToken = token;
-    const map = new mapboxgl.Map({
-      container: "map",
-      style: "mapbox://styles/mapbox/satellite-streets-v12",
-      center: [-82.5764, 28.1293],
-      zoom: 13
-    });
-
-    new mapboxgl.Marker({ color: "#c9a96e" })
-      .setLngLat([-82.5764, 28.1293])
-      .addTo(map);
-  </script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
